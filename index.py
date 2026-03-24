@@ -1,5 +1,6 @@
 #imports
 import random
+import time
 from cards import *
 
 #make the game loop
@@ -23,5 +24,33 @@ def getScore(cards):
         total += cardValue
     return total
 
-randomCards = getRandomCard(), getRandomCard()
-print(getScore(randomCards))
+def playGame():
+    playerCards = [getRandomCard(), getRandomCard()]
+    dealerCards = [getRandomCard(), getRandomCard()]
+    playerHand = [f"{playerCards[0][0]['name']} of {playerCards[0][1]}", f"{playerCards[1][0]['name']} of {playerCards[1][1]}"]
+
+    gameOver = False
+    input('Welcome to blackjack! Press enter to start playing...')
+    print('Dealing cards...\n')
+    time.sleep(1)
+    while not gameOver:
+        playerScore = getScore(playerCards)
+        dealerScore = getScore(dealerCards)
+        print(f'Your cards: {playerHand} - Total score: {playerScore}')
+        print(f'Dealer cards: {dealerCards[0][0]['name']} of {dealerCards[0][1]}')
+        
+        if playerScore > 21:
+            print(f"You're bust... Your total score was: {playerScore}.")
+            gameOver = True
+            return
+        
+        choice = input("Do you want to draw another card(hit) or stand(stand)...")
+        
+        if choice == 'hit':
+            addedCard = getRandomCard()
+            playerCards.append(addedCard)
+            playerHand.append(f"{addedCard[0]['name']} of {addedCard[1]}")
+        elif choice == 'stand':
+            print(f"Dealer cards: {dealerCards[0][0]['name']} of {dealerCards[0][1]}, {dealerCards[1][0]['name']} of {dealerCards[1][1]} - Total score: {dealerScore}")
+        
+playGame()
